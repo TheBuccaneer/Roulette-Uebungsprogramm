@@ -1,0 +1,265 @@
+<html>
+<head>
+<style>
+
+    body { font-size: 1em; }
+	button, i, input, p
+	{ 
+		font-size: 2.0em;
+		margin: 0.1em; 
+		padding: 1em;
+	}
+	.white 
+	{
+		color: #FFFFFF;
+	}
+	
+	label
+	{
+		font-size:2em;
+	}
+	  
+	input[type='checkbox'] { font-size: 10.5em;}
+	  
+
+ </style>
+	
+<script type="text/javascript">
+var currentNumber;
+var zeroGame = [0,3,12,15,32,35,26];
+var greatSeries = [0,2,3,4,7,12,15,18,21,19,22,25,28,26,29,32,35];
+var littleSeries = [5,8,11,10,13,16,23,24,27,30,33,36];
+var orphelines = [1,6,9,14,17,20,31,34];
+function nextRandom() 
+{
+    currentNumber = Math.floor(Math.random() * 36);	
+	document.getElementById("zahl").value = currentNumber;	
+	resetCheckBoxes();
+	write("out1", "")
+	write("out2", "")
+}
+
+function check()
+{
+	var output = "";
+	var cheval = document.getElementById("ch").checked;
+	var plein = document.getElementById("pl").checked;
+	var trans = document.getElementById("tp").checked;
+	var carre = document.getElementById("ca").checked;
+	
+	if(zeroGame.includes(currentNumber))
+	{
+		if(cheval && (currentNumber == 3 || currentNumber == 0))
+			output = "Cheval Zero 3";
+		else if(cheval && (currentNumber == 12 || currentNumber == 15))
+			output = "Cheval 12 15";
+		else if(plein && (currentNumber == 26))
+			output = "26 Plein";
+		else if(cheval && (currentNumber == 32 || currentNumber == 35))
+			output = "Cheval 32 35";
+		
+		if(document.getElementById("zs").checked && output.length > 0)
+			write("out1", output);
+		else
+			write("out1", "Mit Nummer " + currentNumber + " ist dir ein Fehler unterlaufen. Tipp: Wir sind im Zerospiel");
+
+	} if(greatSeries.includes(currentNumber))
+	{
+		output = "";
+		if(trans && (currentNumber == 3 || currentNumber == 0 || currentNumber == 2))
+			output= "Transversal Plein Zero 2 3";
+		else if(cheval && (currentNumber == 4 || currentNumber == 7))
+			output= "Cheval 4 7";
+		else if(cheval && (currentNumber == 12 || currentNumber == 15))
+			output= "Cheval 2 15";
+		else if(cheval && (currentNumber == 18 || currentNumber == 21))
+			output= "Cheval 18 21";
+		else if(cheval && (currentNumber == 19 || currentNumber == 22))
+			output= "Cheval 19 22";
+		else if(carre && (currentNumber == 25 || currentNumber == 28 || currentNumber == 26 || currentNumber == 29))
+			output = "Carre 5 29";
+		else if(cheval && (currentNumber == 32 || currentNumber == 35))
+			output = "Cheval 2 35";
+		
+		if(document.getElementById("gs").checked && output.length > 0)
+		{
+			write("out2", output);
+		}
+		else
+		{
+			write("out2", "Mit Nummer " + currentNumber + " ist dir ein Fehler unterlaufen. Tipp: Wir sind in der grossen Serie");
+			return;
+		}
+	} else if(littleSeries.includes(currentNumber))
+	{
+		output = "";
+		if(cheval && (currentNumber == 5 || currentNumber == 8))
+			output ="Cheval 5 8";
+		else if(cheval && (currentNumber == 10 || currentNumber == 11))
+			output ="Cheval 0 11 (ist eigentlich 10 11. Wusste nicht, ob die 10 bleibt oder abgekuerzt wird mit 0)";
+		else if(cheval && (currentNumber == 13 || currentNumber == 16))
+			output ="Cheval 3 16";
+		else if(cheval && (currentNumber == 23 || currentNumber == 24))
+			output ="Cheval 3 24";
+		else if(cheval && (currentNumber == 27 || currentNumber == 30))
+			output ="Cheval 27 30";
+		else if(cheval && (currentNumber == 33 || currentNumber == 36))
+			output ="Cheval 3 36";
+			
+		if(document.getElementById("ks").checked && output.length > 0)
+		{
+			write("out1", output);
+		}
+		else
+		{
+			write("out1", "Mit Nummer " + currentNumber + " ist dir ein Fehler unterlaufen. Tipp: Wir sind in der kleinen Serie");
+			return;
+		}
+	} else if(orphelines.includes(currentNumber))
+	{
+		output= "";
+		if(plein && currentNumber == 1)
+			output = "plein 1";
+		else if(cheval && (currentNumber == 6 || currentNumber == 9))
+			output = "cheval 6 9";
+		else if(cheval && (currentNumber ==31 || currentNumber == 34))
+			output = "cheval 1 34"
+		else if(cheval && (currentNumber == 14 || currentNumber == 17 || currentNumber == 20))
+			output = "cheval 4 17 20";
+		
+		if(document.getElementById("or").checked && output.length > 0)
+		{
+			write("out1", output);
+		}
+		else
+		{
+			write("out1", "Mit Nummer " + currentNumber + " ist dir ein Fehler unterlaufen. Tipp: Wir sind in Orphelines");
+			return;
+		}
+	}
+	else
+	{
+		alert("Also irgendwas musst du schon auswaehlen");
+		return;
+	}
+	
+	
+	resetAll();
+}
+
+function resetAll()
+{
+	document.getElementById("zahl").value = "";
+	resetCheckBoxes();
+}
+
+function resetCheckBoxes()
+{
+	var boxes = document.getElementsByClassName("checks");
+	for(var i = 0; i < boxes.length; i++)
+		boxes[i].checked = false;	
+}
+
+function write(elem, message)
+{
+	document.getElementById(elem).innerHTML = message
+}
+
+function getNum(row, constNum)
+{
+	var randNum = Math.ceil(Math.random() * 100) * 2;
+	proceedNumber(row, randNum, constNum);
+}
+ 
+function getNum2(row, constNum)
+{
+	var randNum = Math.round( (Math.random() * 200) / 5) * 5;
+	proceedNumber(row, randNum, constNum);
+}
+
+function removeWhite(elem)
+{
+	var iElem = document.getElementById(elem);
+	if(iElem.classList.contains('white') )
+		iElem.classList.remove('white');
+}
+
+function proceedNumber(row, randNum, constNum)
+{
+	var result = randNum * constNum;
+	var elemName = "e"+row;
+	write(row, randNum + " * " + constNum + " = ");
+	write(elemName, result);
+	
+	var iElem = document.getElementById(elemName);
+	if(!iElem.classList.contains('white') )
+		iElem.classList.add('white');
+}
+
+</script>
+
+
+
+</head>
+<body>
+
+ <form>
+  Zahl:<br>
+  <input type="text" id="zahl" disabled>
+  <input type="button" value="naechste Zahl" onclick=nextRandom()>
+</form> 
+
+<form> 
+<fieldset> 
+<input class="checks" type="checkBox" id="ks" name="Zahlmethode" value="kleine Serie"> 
+<label for="ks"> kleine Serie</label><br>
+<input class="checks"  type="checkBox" id="gs" name="Zahlmethode1" value="große Serie"> 
+<label for="gs"> grosse Serie</label><br> 
+<input class="checks"  type="checkBox" id="zs" name="Zahlmethode2" value="Zerospiel"> 
+<label for="zs"> Zerospiel</label><br> 
+<input class="checks"  type="checkBox" id="or" name="Zahlmethode3" value="Orphelines"> 
+<label for="or"> Orphelines</label><br> 
+</fieldset> 
+</form>
+
+<form> 
+<fieldset> 
+<input class="checks"  type="checkBox" id="ch" name="Zahlmethode4" value="Cheval"> 
+<label for="ch">Cheval</label><br> 
+<input class="checks"  type="checkBox" id="pl" name="Zahlmethode5" value="Plain"> 
+<label for="pl">Plain</label><br> 
+<input class="checks"  type="checkBox" id="tp" name="Zahlmethode6" value="Transversal Plein"> 
+<label for="tp">Transversal Plein</label><br> 
+<input class="checks"  type="checkBox" id="ca" name="Zahlmethode7" value="Carre"> 
+<label for="ca">Carre</label><br> 
+</fieldset> 
+</form>
+
+<input type="button" value="check" onclick=check()>
+<p>Ergebnis ist: </p>
+<p id="out1"> </p>
+<p id="out2"> </p>
+<br>
+<br>
+
+<fieldset> 
+<button onclick="getNum('1','2')">next</button><button onclick="removeWhite('e1')">Ergebnis</button><i id = "1">X * 2 =</i><i id="e1" class="white"></i><br>
+<button onclick="getNum('2','5')">next</button><button onclick="removeWhite('e2')">Ergebnis</button><i id = "2">X * 5 =</i><i id="e2" class="white"></i> <br>
+<button onclick="getNum('3','8')">next</button><button onclick="removeWhite('e3')">Ergebnis</button><i id = "3">X * 8 =</i><i id="e3" class="white"></i><br>
+<button onclick="getNum('4','11')">next</button><button onclick="removeWhite('e4')">Ergebnis</button><i id = "4">X * 11 =</i><i id="e4" class="white"></i><br>
+<button onclick="getNum('5','17')">next</button><button onclick="removeWhite('e5')">Ergebnis</button><i id = "5">X * 17 =</i><i id="e5" class="white"></i><br>
+<button onclick="getNum('6','35')">next</button><button onclick="removeWhite('e6')">Ergebnis</button><i id = "6">X * 35 =</i><i id="e6" class="white"></i> <br>
+</fieldset> 
+
+<fieldset> 
+<button onclick="getNum2('11','2')">next</button><button onclick="removeWhite('e11')">Ergebnis</button><i id = "11">X * 2 =</i><i id="e11" class="white"></i><br>
+<button onclick="getNum2('22','5')">next</button><button onclick="removeWhite('e22')">Ergebnis</button><i id = "22">X * 5 =</i><i id="e22" class="white"></i><br>
+<button onclick="getNum2('33','8')">next</button><button onclick="removeWhite('e33')">Ergebnis</button><i id = "33">X * 8 =</i><i id="e33" class="white"></i><br>
+<button onclick="getNum2('44','11')">next</button><button onclick="removeWhite('e44')">Ergebnis</button><i id = "44">X * 11 =</i><i id="e44" class="white"></i><br>
+<button onclick="getNum2('55','17')">next</button><button onclick="removeWhite('e55')">Ergebnis</button><i id = "55">X * 17 =</i><i id="e55" class="white"></i><br>
+<button onclick="getNum2('66','35')">next</button><button onclick="removeWhite('e66')">Ergebnis</button><i id = "66">X * 35 =</i><i id="e66" class="white"></i><br>
+</fieldset> 
+
+
+</body>
+</html>
