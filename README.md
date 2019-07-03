@@ -1,2 +1,1 @@
-# Roulette-Uebungsprogramm
-Uebungsprogramm zum Lernen von auszahlungen und Wettarten
+# Roulette-practice programm in HTML 
